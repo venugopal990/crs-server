@@ -19,12 +19,27 @@ if($name == NULL || $email == NULL || $rollNumber == NULL || $collegeId == NULL)
     return;
 }
 
-$user = $db->register($name, $email, $rollNumber, $collegeId);
+$user = $db->getUser($email);
 
 $res = array();
 
-if($user != NULL){
-    // preparing JSON
+if($user == NULL){
+    $user = $db->register($name, $email, $rollNumber, $collegeId);
+    if($user != NULL){
+        // preparing JSON
+        $res['name'] = $user['name'];
+        $res['email'] = $user['email'];
+        $res['rollNumber'] = $user['rollNumber'];
+        $res['apiKey'] = '';
+        $res['numberOfJobs'] = '';
+        $res['collegeName'] = '';
+        $res['branch'] = '';
+        $res['profileImage'] = '';
+    }else{
+        $res['error'] = true;
+        $res['message'] = 'Couldn\'t register user';
+    }
+}else{
     $res['name'] = $user['name'];
     $res['email'] = $user['email'];
     $res['rollNumber'] = $user['rollNumber'];
@@ -33,9 +48,6 @@ if($user != NULL){
     $res['collegeName'] = '';
     $res['branch'] = '';
     $res['profileImage'] = '';
-}else{
-    $res['error'] = true;
-    $res['message'] = 'Couldn\'t register user';
 }
 
 // Changed here
