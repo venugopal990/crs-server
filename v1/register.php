@@ -38,6 +38,7 @@ if($user != NULL){
     $res['message'] = 'Couldn\'t register user';
 }
 
+// Changed here
 
 header('Content-Type: application/json');
 echo json_encode($res);
